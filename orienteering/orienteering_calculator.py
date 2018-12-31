@@ -87,5 +87,5 @@ if(args.graph):
    plt.gca().set_aspect('equal',adjustable='box')                    #Set x and y axes to be proportional.
    plt.title('Starting point: %d \n %d feet @ %d degrees \n %d feet @ %d degrees \n %d feet @ %d degrees \n Ending point: %d'\
               % (x0,dist1*5,theta1,dist2*5,theta2,dist3*5,theta3,int(np.round(dx+x0)))) #Figure title
-   plt.savefig("./compass_course.png")                               #Save figure.
+   plt.savefig("./figs/compass_course_No."+str(x0)+".png")                               #Save figure.
    plt.show()                                                        #Distplay figure after saving.
