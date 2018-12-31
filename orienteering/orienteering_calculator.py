@@ -4,22 +4,6 @@ import matplotlib.pyplot as plt
 import argparse
 
 
-#
-#    
-#              N=0-deg   opp
-#                      _______
-#                     |       /  sin(theta) = opp/hyp
-#                     |      /     - opp is our change in x-direction (dx)
-#                    a|     /      - convert distance to travel (hyp) to grid units by dividing by 5 ft.
-#                    d|    /p      - sum of n=1 to 3 of dxn + di = xf where dxn = dn/5ft * sin(thetan) 
-#                    j|   /y
-#        5ft          |  /h
-#      |----|         | /
-#                     |/ 
-# |----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|
-# 1    2    3    4    5    6    7    8    9   10   11   12   13   14   15   16   17   18   19   20
-#
-
 print
 print "             _            _                 _                         _            _       _             " 
 print "            (_)          | |               (_)                       | |          | |     | |            " 
@@ -30,9 +14,9 @@ print "  \___/|_|  |_|\___|_| |_|\__\___|\___|_|  |_|_| |_|\__, |  \___\__,_|_|\
 print "                                                     __/ |                                               "
 print "                                                    |___/                                                "
 print
-print "              N=0-deg   opp                                                                              "
-print "                       _______                                                                           "
-print "                     |       /  sin(theta) = opp/hyp                                                     "
+print "            N=0-deg     opp                                                                              "
+print "                     . _______                                                                           "
+print "                    /|\      /  sin(theta) = opp/hyp                                                     "
 print "                     |      /     - opp is our change in x-direction (dx)                                "
 print "                    a|     /      - convert distance to travel (hyp) to grid units by dividing by 5 ft.  "
 print "                    d|    /p      - sum of n=1 to 3 of dxn + di = xf where dxn = dn/5ft * sin(thetan)    "
