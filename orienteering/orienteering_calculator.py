@@ -2,31 +2,33 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import argparse
+import random
 
 
 print
-print "             _            _                 _                         _            _       _             " 
-print "            (_)          | |               (_)                       | |          | |     | |            " 
-print "   ___  _ __ _  ___ _ __ | |_ ___  ___ _ __ _ _ __   __ _    ___ __ _| | ___ _   _| | __ _| |_ ___  _ _ _" 
-print "  / _ \| '__| |/ _ \ '_ \| __/ _ \/ _ \ '__| | '_ \ / _` |  / __/ _` | |/ __| | | | |/ _` | __/ _ \| '__|"
-print " | (_) | |  | |  __/ | | | ||  __/  __/ |  | | | | | (_| | | (_| (_| | | (__| |_| | | (_| | || (_) | |   "
-print "  \___/|_|  |_|\___|_| |_|\__\___|\___|_|  |_|_| |_|\__, |  \___\__,_|_|\___|\__,_|_|\__,_|\__\___/|_|   "
-print "                                                     __/ |                                               "
-print "                                                    |___/                                                "
-print
-print "            N=0-deg     opp                                                                              "
-print "                     . _______                                                                           "
-print "                    /|\      /  sin(theta) = opp/hyp                                                     "
-print "                     |      /     - opp is our change in x-direction (dx)                                "
-print "                    a|     /      - convert distance to travel (hyp) to grid units by dividing by 5 ft.  "
-print "                    d|    /p      - sum of n=1 to 3 of dxn + di = xf where dxn = dn/5ft * sin(thetan)    "
-print "                    j|   /y                                                                              "
-print "        5ft          |  /h                                                                               "
-print "      |----|         | /                                                                                 "
-print "                     |/                                                                                  "
-print " |----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|        "
-print " 1    2    3    4    5    6    7    8    9   10   11   12   13   14   15   16   17   18   19   20        "
+print '''
+             _            _                 _                         _            _       _              
+            (_)          | |               (_)                       | |          | |     | |             
+   ___  _ __ _  ___ _ __ | |_ ___  ___ _ __ _ _ __   __ _    ___ __ _| | ___ _   _| | __ _| |_ ___  _ _ _ 
+  / _ \| '__| |/ _ \ '_ \| __/ _ \/ _ \ '__| | '_ \ / _` |  / __/ _` | |/ __| | | | |/ _` | __/ _ \| '__|
+ | (_) | |  | |  __/ | | | ||  __/  __/ |  | | | | | (_| | | (_| (_| | | (__| |_| | | (_| | || (_) | |   
+  \___/|_|  |_|\___|_| |_|\__\___|\___|_|  |_|_| |_|\__, |  \___\__,_|_|\___|\__,_|_|\__,_|\__\___/|_|   
+                                                     __/ |                                               
+                                                    |___/                                                
 
+            N=0-deg     opp                                                                              
+                     . _______                                                                           
+                    /|\      /  sin(theta) = opp/hyp                                                     
+                     |      /     - opp is our change in x-direction (dx)                                
+                    a|     /      - convert distance to travel (hyp) to grid units by dividing by 5 ft.  
+                    d|    /p      - sum of n=1 to 3 of dxn + di = xf where dxn = dn/5ft * sin(thetan)    
+                    j|   /y                                                                              
+        5ft          |  /h                                                                               
+      |----|         | /                                                                                 
+                     |/                                                                                  
+ |----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|        
+ 1    2    3    4    5    6    7    8    9   10   11   12   13   14   15   16   17   18   19   20        
+'''
 
 
 def parse_args(): #parse (interpret) command line arguements
@@ -39,32 +41,34 @@ def parse_args(): #parse (interpret) command line arguements
 
 args = parse_args() #call the pare_args function definition (actually perform the arg parse).
 
-#get parameters from command line arguments
-x0=args.startpoint
-theta1,theta2,theta3=args.bearing[0],args.bearing[1],args.bearing[2]
-dist1,dist2,dist3=args.distance[0],args.distance[1],args.distance[2]
+#get starting point, bearing, and distance. then run calculator. 
+if(args.bearing and args.distance and args.startpoint):
+   x0=args.startpoint
+   theta1,theta2,theta3=args.bearing[0],args.bearing[1],args.bearing[2]
+   dist1,dist2,dist3=args.distance[0],args.distance[1],args.distance[2]
 
-#convert distance parameters to grid units by dividing by 5ft.
-dist1=dist1/5.
-dist2=dist2/5.
-dist3=dist3/5.
 
-#get points. There are 4. starting, first, second, and final destinations.
-destinations=np.zeros(shape=(2,4)) # Initialized values to 0 [axis,coordinate]
-destinations[0,0]=x0 #x coordinate starting position
-destinations[1,0]=0  #y coordinate starting position
-destinations[0,1]=dist1*np.sin(np.radians(theta1))+destinations[0,0] #x coordinate first location
-destinations[1,1]=dist1*np.cos(np.radians(theta1))+destinations[1,0] #y coordinate first location
-destinations[0,2]=dist2*np.sin(np.radians(theta2))+destinations[0,1] #x coordinate second location
-destinations[1,2]=dist2*np.cos(np.radians(theta2))+destinations[1,1] #y coordinate second location
-destinations[0,3]=np.round(dist3*np.sin(np.radians(theta3))+destinations[0,2]) #x coordinate final destination
-destinations[1,3]=np.round(dist3*np.cos(np.radians(theta3))+destinations[1,2]) #y coordinate final destination
+   #convert distance parameters to grid units by dividing by 5ft.
+   dist1=dist1/5.
+   dist2=dist2/5.
+   dist3=dist3/5.
 
-#solver
-dx=dist1*np.sin(np.radians(theta1))+dist2*np.sin(np.radians(theta2))+dist3*np.sin(np.radians(theta3)) #change along x (the rope direction)
-dy=dist1*np.cos(np.radians(theta1))+dist2*np.cos(np.radians(theta2))+dist3*np.cos(np.radians(theta3)) #change along y (perpendicular to rope)
-print("beginning destination: "+str(int(np.round(x0))))   #print to screen the starting point.
-print("correct destination: "+str(int(np.round(dx+x0))))  #print to screen the correct destination point.
+   #get points. There are 4. starting, first, second, and final destinations.
+   destinations=np.zeros(shape=(2,4)) # Initialized values to 0 [axis,coordinate]
+   destinations[0,0]=x0 #x coordinate starting position
+   destinations[1,0]=0  #y coordinate starting position
+   destinations[0,1]=dist1*np.sin(np.radians(theta1))+destinations[0,0] #x coordinate first location
+   destinations[1,1]=dist1*np.cos(np.radians(theta1))+destinations[1,0] #y coordinate first location
+   destinations[0,2]=dist2*np.sin(np.radians(theta2))+destinations[0,1] #x coordinate second location
+   destinations[1,2]=dist2*np.cos(np.radians(theta2))+destinations[1,1] #y coordinate second location
+   destinations[0,3]=np.round(dist3*np.sin(np.radians(theta3))+destinations[0,2]) #x coordinate final destination
+   destinations[1,3]=np.round(dist3*np.cos(np.radians(theta3))+destinations[1,2]) #y coordinate final destination
+
+   #solver
+   dx=dist1*np.sin(np.radians(theta1))+dist2*np.sin(np.radians(theta2))+dist3*np.sin(np.radians(theta3)) #change along x (the rope direction)
+   dy=dist1*np.cos(np.radians(theta1))+dist2*np.cos(np.radians(theta2))+dist3*np.cos(np.radians(theta3)) #change along y (perpendicular to rope)
+   print("beginning destination: "+str(int(np.round(x0))))   #print to screen the starting point.
+   print("correct destination: "+str(int(np.round(dx+x0))))  #print to screen the correct destination point.
 
 
 if(args.graph):
@@ -89,3 +93,4 @@ if(args.graph):
               % (x0,dist1*5,theta1,dist2*5,theta2,dist3*5,theta3,int(np.round(dx+x0)))) #Figure title
    plt.savefig("./figs/compass_course_No."+str(x0)+".png")                               #Save figure.
    plt.show()                                                        #Distplay figure after saving.
+
