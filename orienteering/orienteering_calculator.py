@@ -16,16 +16,16 @@ print '''
                                                      __/ |                                               
                                                     |___/                                                
 
-            N=0-deg     opp                                                                              
-                     . _______                                                                           
-                    /|\      /  sin(theta) = opp/hyp                                                     
-                     |      /     - opp is our change in x-direction (dx)                                
-                    a|     /      - convert distance to travel (hyp) to grid units by dividing by 5 ft.  
-                    d|    /p      - sum of n=1 to 3 of dxn + di = xf where dxn = dn/5ft * sin(thetan)    
-                    j|   /y                                                                              
-        5ft          |  /h                                                                               
-      |----|         | /                                                                                 
-                     |/                                                                                  
+            N=0-deg     opp
+                     . _______
+                    /|\      /   sum[n=1,3] [dx_n + xi = xf] where dx_n = d_n/5 * sin(@)
+                     |      /      - xi and xf are the initial and final positions along the rope.
+                    a|     /       - dx_n are the displacements along the rope (x-axis) for each "n" bearing-distance pair.
+                    d|    /p       - opp is our change in x-direction (dx_n), so we use sin(@). 
+                    j|   /y           - sin(@) = opp/hyp, where @ is the bearing, opp is dx_n, and hyp is d_n..
+        5ft          |  /h         - division by 5 (feet) is to obtain the displacement in grid units (a.k.a. rope markers).
+      |----|         |@/             
+                     |/              
  |----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|        
  1    2    3    4    5    6    7    8    9   10   11   12   13   14   15   16   17   18   19   20        
 '''
